@@ -8,7 +8,7 @@ import io.mockk.verify
 import org.junit.Before
 import org.junit.Test
 
-class SparseParcelableArrayKeyTest{
+class SparseParcelableArrayKeyTest {
     private val bundle = mockk<Bundle>(relaxed = true)
     private val key = SparseParcelableArrayKey<FakeParcelable>("Test")
     private val expect = SparseArray<FakeParcelable>()

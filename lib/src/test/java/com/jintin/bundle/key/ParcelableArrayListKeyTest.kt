@@ -7,7 +7,7 @@ import io.mockk.verify
 import org.junit.Before
 import org.junit.Test
 
-class ParcelableArrayListKeyTest{
+class ParcelableArrayListKeyTest {
     private val bundle = mockk<Bundle>(relaxed = true)
     private val key = ParcelableArrayListKey<FakeParcelable>("Test")
     private val expect = ArrayList<FakeParcelable>()

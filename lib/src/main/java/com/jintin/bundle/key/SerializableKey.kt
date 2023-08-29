@@ -5,7 +5,7 @@ import java.io.Serializable
 
 
 @JvmInline
-value class SerializableKey<T: Serializable>(override val key: String) : TypedKey<T> {
+value class SerializableKey<T : Serializable>(override val key: String) : TypedKey<T> {
     override fun put(bundle: Bundle, value: T) {
         bundle.putSerializable(key, value)
     }

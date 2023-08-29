@@ -8,7 +8,8 @@ value class StringKey(override val key: String) : DefaultTypedKey<String> {
         bundle.putString(key, value)
     }
 
-    override fun get(bundle: Bundle, defaultValue: String): String = bundle.getString(key, defaultValue)
+    override fun get(bundle: Bundle, defaultValue: String): String =
+        bundle.getString(key, defaultValue)
 
 
     override fun get(bundle: Bundle): String? = bundle.getString(key)

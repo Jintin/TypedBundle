@@ -1,7 +1,6 @@
 package com.jintin.bundle.key
 
 import android.os.Bundle
-import java.util.ArrayList
 
 @JvmInline
 value class StringArrayListKey(override val key: String) : TypedKey<ArrayList<String>> {

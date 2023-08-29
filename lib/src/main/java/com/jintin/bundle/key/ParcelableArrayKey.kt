@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.os.Parcelable
 
 @JvmInline
-value class ParcelableArrayKey<T: Parcelable>(override val key: String) : TypedKey<Array<T>> {
+value class ParcelableArrayKey<T : Parcelable>(override val key: String) : TypedKey<Array<T>> {
     override fun put(bundle: Bundle, value: Array<T>) {
         bundle.putParcelableArray(key, value)
     }
