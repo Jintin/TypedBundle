@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.jintin.typedbundle.app"
+    namespace = "com.jintin.bundle.app"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.jintin.typedbundle.app"
+        applicationId = "com.jintin.bundle.app"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -51,7 +51,9 @@ android {
 
 dependencies {
 
-    implementation(project(":lib"))
+    implementation(project(":typed-bundle"))
+//    implementation("com.jintin.bundle:typed-bundle:0.1.0")
+
     implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
     implementation("androidx.activity:activity-compose:1.7.2")
