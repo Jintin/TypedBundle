@@ -1,3 +1,5 @@
+import java.net.URI
+
 pluginManagement {
     repositories {
         google()
@@ -12,6 +14,9 @@ dependencyResolutionManagement {
         google()
         mavenLocal()
         mavenCentral()
+//        maven {
+//            url = URI("https://s01.oss.sonatype.org/service/local/repositories/iogithubjintin-1025/content/")
+//        }
     }
 }
 

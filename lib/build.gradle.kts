@@ -2,6 +2,7 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("maven-publish")
+    id("signing")
 }
 
 android {
@@ -37,6 +38,13 @@ android {
         }
     }
 }
+signing {
+    useInMemoryPgpKeys(
+        System.getenv("OSS_SIGNING_KEY"),
+        System.getenv("OSS_SIGNING_PASSWORD"),
+    )
+    sign(publishing.publications)
+}
 
 dependencies {
     testImplementation("junit:junit:4.13.2")
@@ -48,10 +56,24 @@ dependencies {
 publishing {
     publications {
         register<MavenPublication>("release") {
-            groupId = "com.jintin.bundle"
+            groupId = "io.github.jintin"
             artifactId = "typed-bundle"
             version = "0.1.0"
 
+            pom {
+                name.set("TypedBundle")
+                description.set("Type safe Bundle for Android development")
+                url.set("https://github.com/Jintin/TypedBundle")
+                licenses {
+                    name.set("The Apache Software License, Version 2.0")
+                    url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                }
+                scm {
+                    connection.set("https://github.com/Jintin/TypedBundle")
+                    developerConnection.set("https://github.com/Jintin/TypedBundle")
+                    url.set("https://github.com/Jintin/TypedBundle")
+                }
+            }
             afterEvaluate {
                 from(components["release"])
             }
