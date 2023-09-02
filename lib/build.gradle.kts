@@ -65,8 +65,16 @@ publishing {
                 description.set("Type safe Bundle for Android development")
                 url.set("https://github.com/Jintin/TypedBundle")
                 licenses {
-                    name.set("The Apache Software License, Version 2.0")
-                    url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                    license {
+                        name.set("The Apache Software License, Version 2.0")
+                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                    }
+                }
+                developers {
+                    developer {
+                        id.set("Jintin")
+                        email.set("jintin.lin1018@gmail.com")
+                    }
                 }
                 scm {
                     connection.set("https://github.com/Jintin/TypedBundle")
