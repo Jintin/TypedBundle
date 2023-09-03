@@ -10,8 +10,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.jintin.bundle.key.StringKey
-import com.jintin.bundle.key.get
-import com.jintin.bundle.key.put
+import com.jintin.bundle.get
+import com.jintin.bundle.put
 
 class MainActivity : ComponentActivity() {
 

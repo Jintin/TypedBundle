@@ -7,7 +7,7 @@ A type safe `Bundle` for Android development.
 
 ```kotlin
 dependencies {
-    implementation("io.github.jintin:typed-bundle:0.1.0")
+    implementation("io.github.jintin:typed-bundle:0.2.0")
 }
 ```
 

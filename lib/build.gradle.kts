@@ -58,7 +58,7 @@ publishing {
         register<MavenPublication>("release") {
             groupId = "io.github.jintin"
             artifactId = "typed-bundle"
-            version = "0.1.0"
+            version = "0.2.0"
 
             pom {
                 name.set("TypedBundle")
