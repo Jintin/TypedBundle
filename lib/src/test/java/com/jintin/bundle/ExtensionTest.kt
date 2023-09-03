@@ -1,6 +1,8 @@
-package com.jintin.bundle.key
+package com.jintin.bundle
 
 import android.os.Bundle
+import com.jintin.bundle.key.DefaultTypedKey
+import com.jintin.bundle.key.TypedKey
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify

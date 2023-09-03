@@ -1,6 +1,8 @@
-package com.jintin.bundle.key
+package com.jintin.bundle
 
 import android.os.Bundle
+import com.jintin.bundle.key.DefaultTypedKey
+import com.jintin.bundle.key.TypedKey
 
 fun <T> Bundle.put(key: TypedKey<T>, value: T) {
     key.put(this, value)
