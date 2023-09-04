@@ -1,4 +1,7 @@
 # TypedBundle
+
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/Jintin/TypedBundle/tree/master.svg?style=shield)](https://dl.circleci.com/status-badge/redirect/gh/Jintin/TypedBundle/tree/master) [![Maven Central](https://img.shields.io/maven-central/v/io.github.jintin/typed-bundle)](https://mvnrepository.com/artifact/io.github.jintin/typed-bundle)
+
 A type safe `Bundle` for Android development.
 
 `Bundle` is essential component in Android development from Day 1, but the flexible key-value structure don't limiting us from put a `String` and get an `Int` back with same key (and which will cause crash not compile error). This library is aimed to use `TypedKey` and its child class (such as `StringKey` or `IntKey` in below example) to align the type on both get and set usage.
