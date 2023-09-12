@@ -20,7 +20,8 @@ value class SerializableKey<T : Serializable>(override val key: String) :
         intent.putExtra(key, value)
     }
 
+    @Suppress("UNCHECKED_CAST")
     override fun get(intent: Intent): T? {
-        return intent.getParcelableExtra(key)
+        return intent.getSerializableExtra(key) as? T
     }
 }

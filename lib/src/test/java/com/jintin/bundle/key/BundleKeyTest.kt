@@ -7,15 +7,15 @@ import io.mockk.verify
 import org.junit.Before
 import org.junit.Test
 
-class BundleKeyTest {
+class BundleKeyTest : BaseKeyTest() {
 
-    private val bundle = mockk<Bundle>(relaxed = true)
     private val key = BundleKey("Test")
     private val expect = mockk<Bundle>()
 
     @Before
     fun setup() {
         every { bundle.getBundle(any()) } returns expect
+        every { intent.getBundleExtra(any()) } returns expect
     }
 
     @Test
@@ -25,9 +25,22 @@ class BundleKeyTest {
     }
 
     @Test
+    fun putIntentTest() {
+        key.put(intent, expect)
+        verify(exactly = 1) { intent.putExtra(key.key, expect) }
+    }
+
+    @Test
     fun getTest() {
         val result = key.get(bundle)
         verify(exactly = 1) { bundle.getBundle(key.key) }
+        assert(result == expect)
+    }
+
+    @Test
+    fun getIntentTest() {
+        val result = key.get(intent)
+        verify(exactly = 1) { intent.getBundleExtra(key.key) }
         assert(result == expect)
     }
 }
