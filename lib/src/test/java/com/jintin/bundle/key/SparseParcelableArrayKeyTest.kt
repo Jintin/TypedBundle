@@ -1,15 +1,12 @@
 package com.jintin.bundle.key
 
-import android.os.Bundle
 import android.util.SparseArray
 import io.mockk.every
-import io.mockk.mockk
 import io.mockk.verify
 import org.junit.Before
 import org.junit.Test
 
-class SparseParcelableArrayKeyTest {
-    private val bundle = mockk<Bundle>(relaxed = true)
+class SparseParcelableArrayKeyTest : BaseKeyTest() {
     private val key = SparseParcelableArrayKey<FakeParcelable>("Test")
     private val expect = SparseArray<FakeParcelable>()
 

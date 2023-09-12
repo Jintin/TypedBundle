@@ -1,6 +1,5 @@
 package com.jintin.bundle.key
 
-import android.os.Bundle
 import android.util.SizeF
 import io.mockk.every
 import io.mockk.mockk
@@ -8,9 +7,8 @@ import io.mockk.verify
 import org.junit.Before
 import org.junit.Test
 
-class SizeFKeyTest {
+class SizeFKeyTest : BaseKeyTest() {
 
-    private val bundle = mockk<Bundle>(relaxed = true)
     private val key = SizeFKey("Test")
     private val expect = mockk<SizeF>()
 
