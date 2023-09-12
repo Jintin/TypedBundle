@@ -2,7 +2,7 @@ package com.jintin.bundle.key
 
 import android.os.Bundle
 
-interface TypedKey<T> {
+interface TypedBundle<T> {
     val key: String
 
     fun put(bundle: Bundle, value: T)
@@ -10,6 +10,6 @@ interface TypedKey<T> {
     fun get(bundle: Bundle): T?
 }
 
-interface DefaultTypedKey<T> : TypedKey<T> {
+interface DefaultTypedBundle<T> : TypedBundle<T> {
     fun get(bundle: Bundle, defaultValue: T): T
 }

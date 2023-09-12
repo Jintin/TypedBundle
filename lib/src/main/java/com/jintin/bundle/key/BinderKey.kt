@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.os.IBinder
 
 @JvmInline
-value class BinderKey(override val key: String) : TypedKey<IBinder> {
+value class BinderKey(override val key: String) : TypedBundle<IBinder> {
     override fun put(bundle: Bundle, value: IBinder) {
         bundle.putBinder(key, value)
     }

@@ -4,7 +4,8 @@ import android.os.Bundle
 import android.util.SizeF
 
 @JvmInline
-value class SizeFKey(override val key: String) : TypedKey<SizeF> {
+value class SizeFKey(override val key: String) :
+    TypedBundle<SizeF> {
     override fun put(bundle: Bundle, value: SizeF) {
         bundle.putSizeF(key, value)
     }

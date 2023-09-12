@@ -6,7 +6,7 @@ import android.util.SparseArray
 
 @JvmInline
 value class SparseParcelableArrayKey<T : Parcelable>(override val key: String) :
-    TypedKey<SparseArray<T>> {
+    TypedBundle<SparseArray<T>> {
     override fun put(bundle: Bundle, value: SparseArray<T>) {
         bundle.putSparseParcelableArray(key, value)
     }

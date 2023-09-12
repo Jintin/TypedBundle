@@ -1,8 +1,8 @@
 package com.jintin.bundle
 
 import android.os.Bundle
-import com.jintin.bundle.key.DefaultTypedKey
-import com.jintin.bundle.key.TypedKey
+import com.jintin.bundle.key.DefaultTypedBundle
+import com.jintin.bundle.key.TypedBundle
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -13,7 +13,7 @@ class ExtensionTest {
     @Test
     fun putTest() {
         val bundle = Bundle()
-        val key = mockk<TypedKey<String>>(relaxed = true)
+        val key = mockk<TypedBundle<String>>(relaxed = true)
         every { key.put(any(), any()) } returns Unit
         val value = "1234"
         bundle.put(key, value)
@@ -23,7 +23,7 @@ class ExtensionTest {
     @Test
     fun getTest() {
         val bundle = Bundle()
-        val key = mockk<TypedKey<String>>(relaxed = true)
+        val key = mockk<TypedBundle<String>>(relaxed = true)
         val value = "1234"
         every { key.get(any()) } returns value
         val result = bundle.get(key)
@@ -34,7 +34,7 @@ class ExtensionTest {
     @Test
     fun getTestWithDefault() {
         val bundle = Bundle()
-        val key = mockk<DefaultTypedKey<String>>(relaxed = true)
+        val key = mockk<DefaultTypedBundle<String>>(relaxed = true)
         val value = "1234"
         every { key.get(any(), any()) } returns value
         val result = bundle.get(key, "2345")
