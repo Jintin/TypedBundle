@@ -12,33 +12,33 @@ class ParcelableArrayKeyTest : BaseKeyTest() {
 
     @Before
     fun setup() {
-        every { bundle.getParcelableArray(any()) } returns expect
-        every { intent.getParcelableArrayExtra(any()) } returns expect
+        every { bundle.getParcelableArray(any(), FakeParcelable::class.java) } returns expect
+        every { intent.getParcelableArrayExtra(any(), FakeParcelable::class.java) } returns expect
     }
 
     @Test
     fun putTest() {
-        key.put(bundle, expect)
+        bundle[key] = expect
         verify(exactly = 1) { bundle.putParcelableArray(key.key, expect) }
     }
 
     @Test
     fun putIntentTest() {
-        key.put(intent, expect)
+        intent.putExtra(key, expect)
         verify(exactly = 1) { intent.putExtra(key.key, expect) }
     }
 
     @Test
     fun getTest() {
-        val result = key.get(bundle)
-        verify(exactly = 1) { bundle.getParcelableArray(key.key) }
+        val result = bundle[key]
+        verify(exactly = 1) { bundle.getParcelableArray(key.key, FakeParcelable::class.java) }
         assert(result.contentEquals(expect))
     }
 
     @Test
     fun getIntentTest() {
-        val result = key.get(intent)
-        verify(exactly = 1) { intent.getParcelableArrayExtra(key.key) }
+        val result = intent.getExtra(key)
+        verify(exactly = 1) { intent.getParcelableArrayExtra(key.key,FakeParcelable::class.java) }
         assert(result.contentEquals(expect))
     }
 }

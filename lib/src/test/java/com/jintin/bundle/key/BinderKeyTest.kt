@@ -19,13 +19,13 @@ class BinderKeyTest : BaseKeyTest() {
 
     @Test
     fun putTest() {
-        key.put(bundle, expect)
+        bundle[key] = expect
         verify(exactly = 1) { bundle.putBinder(key.key, expect) }
     }
 
     @Test
     fun getTest() {
-        val result = key.get(bundle)
+        val result = bundle[key]
         verify(exactly = 1) { bundle.getBinder(key.key) }
         assert(result == expect)
     }

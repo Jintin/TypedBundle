@@ -17,26 +17,26 @@ class BooleanArrayKeyTest : BaseKeyTest() {
 
     @Test
     fun putTest() {
-        key.put(bundle, expect)
+        bundle[key] = expect
         verify(exactly = 1) { bundle.putBooleanArray(key.key, expect) }
     }
 
     @Test
     fun putIntentTest() {
-        key.put(intent, expect)
+        intent.putExtra(key, expect)
         verify(exactly = 1) { intent.putExtra(key.key, expect) }
     }
 
     @Test
     fun getTest() {
-        val result = key.get(bundle)
+        val result = bundle[key]
         verify(exactly = 1) { bundle.getBooleanArray(key.key) }
         assert(result.contentEquals(expect))
     }
 
     @Test
     fun getIntentTest() {
-        val result = key.get(intent)
+        val result = intent.getExtra(key)
         verify(exactly = 1) { intent.getBooleanArrayExtra(key.key) }
         assert(result.contentEquals(expect))
     }

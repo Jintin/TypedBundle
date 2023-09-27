@@ -10,8 +10,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.jintin.bundle.key.StringKey
-import com.jintin.bundle.get
-import com.jintin.bundle.put
+import com.jintin.bundle.key.get
+import com.jintin.bundle.key.set
 
 class MainActivity : ComponentActivity() {
 
@@ -21,7 +21,6 @@ class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContent {
             TextField(
                 value = text,
@@ -34,13 +33,12 @@ class MainActivity : ComponentActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.put(textKey, text)
-//        textKey.put(outState, text)
+        outState.set(textKey, text)
+//        outState[textKey] = text
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         text = savedInstanceState.get(textKey, "")
-//        text = textKey.get(savedInstanceState).orEmpty()
     }
 }

@@ -12,19 +12,29 @@ class SparseParcelableArrayKeyTest : BaseKeyTest() {
 
     @Before
     fun setup() {
-        every { bundle.getSparseParcelableArray<FakeParcelable>(any()) } returns expect
+        every {
+            bundle.getSparseParcelableArray(
+                any(),
+                FakeParcelable::class.java
+            )
+        } returns expect
     }
 
     @Test
     fun putTest() {
-        key.put(bundle, expect)
+        bundle[key] = expect
         verify(exactly = 1) { bundle.putSparseParcelableArray(key.key, expect) }
     }
 
     @Test
     fun getTest() {
-        val result = key.get(bundle)
-        verify(exactly = 1) { bundle.getSparseParcelableArray<FakeParcelable>(key.key) }
+        val result = bundle[key]
+        verify(exactly = 1) {
+            bundle.getSparseParcelableArray(
+                key.key,
+                FakeParcelable::class.java
+            )
+        }
         assert(result == expect)
     }
 }

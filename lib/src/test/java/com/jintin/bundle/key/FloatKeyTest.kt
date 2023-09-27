@@ -21,33 +21,33 @@ class FloatKeyTest : BaseKeyTest() {
 
     @Test
     fun putTest() {
-        key.put(bundle, expect)
+        bundle[key] = expect
         verify(exactly = 1) { bundle.putFloat(key.key, expect) }
     }
 
     @Test
     fun putIntentTest() {
-        key.put(intent, expect)
+        intent.putExtra(key, expect)
         verify(exactly = 1) { intent.putExtra(key.key, expect) }
     }
 
     @Test
     fun getTest() {
-        val result = key.get(bundle)
+        val result = bundle[key]
         verify(exactly = 1) { bundle.getFloat(key.key) }
         assert(result == expect)
     }
 
     @Test
     fun getWithDefaultTest() {
-        val result = key.get(bundle, defaultValue)
+        val result = bundle.get(key, defaultValue)
         verify(exactly = 1) { bundle.getFloat(key.key, defaultValue) }
         assert(result == expectWithDefault)
     }
 
     @Test
     fun getIntentTest() {
-        val result = key.get(intent, defaultValue)
+        val result = intent.getExtra(key, defaultValue)
         verify(exactly = 1) { intent.getFloatExtra(key.key, defaultValue) }
         assert(result == expectWithDefault)
     }
