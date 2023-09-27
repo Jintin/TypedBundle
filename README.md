@@ -23,9 +23,7 @@ val bundle = Bundle()
 
 // Bundle usage
 bundle[textKey] = "Some text"         // only String value is allowed
-bundle.set(textKey, "Some text")
 bundle[intKey] = 12345                // only Int value is allowed
-bundle.set(intKey, 12345)
 
 val text = bundle.get(textKey, "")    // guarantee result to be a String
 val text = bundle[textKey]            // guarantee result to be a String?
