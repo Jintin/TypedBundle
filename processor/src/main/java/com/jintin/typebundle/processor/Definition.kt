@@ -4,8 +4,6 @@ import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier
-import com.squareup.kotlinpoet.ParameterSpec
-import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeName
 import com.squareup.kotlinpoet.TypeSpec
@@ -58,6 +56,7 @@ class Definition(
     )
 
     private val keyClass = ClassName(PACKAGE_NAME, name + "Key").tryParameterizedBy(generic)
+
     fun fileSpec(): FileSpec {
         val builder = FileSpec.builder(PACKAGE_NAME, name + "Key")
             .addType(typeSpec())

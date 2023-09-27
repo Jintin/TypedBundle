@@ -1,11 +1,5 @@
 import java.net.URI
 
-include(":annotation")
-
-
-include(":processor")
-
-
 pluginManagement {
     repositories {
         google()
@@ -29,4 +23,6 @@ dependencyResolutionManagement {
 rootProject.name = "TypedBundle"
 include(":app")
 include(":lib")
+include(":annotation")
+include(":processor")
 project(":lib").name = "typed-bundle"
