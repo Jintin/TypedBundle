@@ -48,8 +48,6 @@ signing {
 }
 
 dependencies {
-
-    implementation(project(":annotation"))
     ksp(project(":processor"))
 
     testImplementation("junit:junit:4.13.2")

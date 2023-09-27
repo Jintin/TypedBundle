@@ -6,7 +6,6 @@ import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.processing.SymbolProcessor
 import com.google.devtools.ksp.symbol.KSAnnotated
-import com.jintin.typebundle.annotation.TypedAnnotation
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.ksp.writeTo
@@ -117,7 +116,7 @@ class MyProcessor(private val codeGenerator: CodeGenerator, private val logger: 
     )
 
     override fun process(resolver: Resolver): List<KSAnnotated> {
-        resolver.getSymbolsWithAnnotation(TypedAnnotation::class.qualifiedName.orEmpty())
+        resolver.getSymbolsWithAnnotation("com.jintin.bundle.TypedAnnotation")
             .forEach { _ ->
                 data.forEach {
                     it.fileSpec().writeTo(

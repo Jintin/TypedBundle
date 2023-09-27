@@ -15,7 +15,7 @@ dependencyResolutionManagement {
         mavenLocal()
         mavenCentral()
 //        maven {
-//            url = URI("https://s01.oss.sonatype.org/service/local/repositories/iogithubjintin-1026/content/")
+//            url = URI("https://s01.oss.sonatype.org/service/local/repositories/iogithubjintin-1035/content/")
 //        }
     }
 }
@@ -23,6 +23,5 @@ dependencyResolutionManagement {
 rootProject.name = "TypedBundle"
 include(":app")
 include(":lib")
-include(":annotation")
 include(":processor")
 project(":lib").name = "typed-bundle"
