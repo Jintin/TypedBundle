@@ -17,26 +17,26 @@ class IntegerArrayListKeyTest : BaseKeyTest() {
 
     @Test
     fun putTest() {
-        key.put(bundle, expect)
+        bundle[key] = expect
         verify(exactly = 1) { bundle.putIntegerArrayList(key.key, expect) }
     }
 
     @Test
     fun putIntentTest() {
-        key.put(intent, expect)
+        intent.putExtra(key, expect)
         verify(exactly = 1) { intent.putExtra(key.key, expect) }
     }
 
     @Test
     fun getTest() {
-        val result = key.get(bundle)
+        val result = bundle[key]
         verify(exactly = 1) { bundle.getIntegerArrayList(key.key) }
         assert(result == expect)
     }
 
     @Test
     fun getIntentTest() {
-        val result = key.get(intent)
+        val result = intent.getExtra(key)
         verify(exactly = 1) { intent.getIntegerArrayListExtra(key.key) }
         assert(result == expect)
     }

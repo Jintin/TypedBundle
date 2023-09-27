@@ -1,5 +1,11 @@
 import java.net.URI
 
+include(":annotation")
+
+
+include(":processor")
+
+
 pluginManagement {
     repositories {
         google()

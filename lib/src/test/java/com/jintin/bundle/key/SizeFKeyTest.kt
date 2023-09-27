@@ -19,13 +19,13 @@ class SizeFKeyTest : BaseKeyTest() {
 
     @Test
     fun putTest() {
-        key.put(bundle, expect)
+        bundle[key] = expect
         verify(exactly = 1) { bundle.putSizeF(key.key, expect) }
     }
 
     @Test
     fun getTest() {
-        val result = key.get(bundle)
+        val result = bundle[key]
         verify(exactly = 1) { bundle.getSizeF(key.key) }
         assert(result == expect)
     }
