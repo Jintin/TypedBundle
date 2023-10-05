@@ -1,6 +1,8 @@
 package com.jintin.bundle.key
 
+import android.os.Build
 import android.util.SparseArray
+import com.jintin.bundle.ReflectionHelpers
 import io.mockk.every
 import io.mockk.verify
 import org.junit.Before
@@ -13,10 +15,10 @@ class SparseParcelableArrayKeyTest : BaseKeyTest() {
     @Before
     fun setup() {
         every {
-            bundle.getSparseParcelableArray(
-                any(),
-                FakeParcelable::class.java
-            )
+            bundle.getSparseParcelableArray<FakeParcelable>(any())
+        } returns expect
+        every {
+            bundle.getSparseParcelableArray(any(), FakeParcelable::class.java)
         } returns expect
     }
 
@@ -27,7 +29,24 @@ class SparseParcelableArrayKeyTest : BaseKeyTest() {
     }
 
     @Test
+    fun getTestOldApi() {
+        ReflectionHelpers.setStaticFieldViaReflection(
+            Build.VERSION::class.java.getField("SDK_INT"),
+            Build.VERSION_CODES.S_V2
+        )
+        val result = bundle[key]
+        verify(exactly = 1) {
+            bundle.getSparseParcelableArray<FakeParcelable>(key.key)
+        }
+        assert(result == expect)
+    }
+
+    @Test
     fun getTest() {
+        ReflectionHelpers.setStaticFieldViaReflection(
+            Build.VERSION::class.java.getField("SDK_INT"),
+            Build.VERSION_CODES.TIRAMISU
+        )
         val result = bundle[key]
         verify(exactly = 1) {
             bundle.getSparseParcelableArray(

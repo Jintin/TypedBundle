@@ -1,5 +1,13 @@
-package com.jintin.typebundle.processor
+package com.jintin.typebundle.processor.obj
 
+import com.jintin.typebundle.processor.BUILD_VERSION_CLASS
+import com.jintin.typebundle.processor.BUNDLE_CLASS
+import com.jintin.typebundle.processor.INTENT_CLASS
+import com.jintin.typebundle.processor.PACKAGE_NAME
+import com.jintin.typebundle.processor.VERSION_CODES_CLASS
+import com.jintin.typebundle.processor.chainIfNotNull
+import com.jintin.typebundle.processor.suppress
+import com.jintin.typebundle.processor.tryParameterizedBy
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
@@ -7,14 +15,13 @@ import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeName
 import com.squareup.kotlinpoet.TypeSpec
-import com.squareup.kotlinpoet.TypeVariableName
 import com.squareup.kotlinpoet.asClassName
 import kotlin.reflect.KClass
 
 class Definition(
     private val name: String,
     private val target: TypeName,
-    private val generic: TypeVariableName? = null,
+    private val genericGet: Generic? = null,
     private val bundleGetNonNull: Boolean = false,
     private val bundleGetWithDefault: Boolean = false,
     private val bundleUsageOnly: Boolean = false,
@@ -23,7 +30,7 @@ class Definition(
 
     constructor(
         className: ClassName,
-        generic: TypeVariableName? = null,
+        generic: Generic? = null,
         bundleGetNonNull: Boolean = false,
         bundleGetWithDefault: Boolean = false,
         bundleUsageOnly: Boolean = false,
@@ -31,7 +38,7 @@ class Definition(
     ) : this(
         name = className.simpleName,
         target = className,
-        generic = generic,
+        genericGet = generic,
         bundleGetNonNull = bundleGetNonNull,
         bundleGetWithDefault = bundleGetWithDefault,
         bundleUsageOnly = bundleUsageOnly,
@@ -40,7 +47,7 @@ class Definition(
 
     constructor(
         kClass: KClass<*>,
-        generic: TypeVariableName? = null,
+        generic: Generic? = null,
         bundleGetNonNull: Boolean = false,
         bundleGetWithDefault: Boolean = false,
         bundleUsageOnly: Boolean = false,
@@ -48,14 +55,15 @@ class Definition(
     ) : this(
         name = kClass.simpleName.orEmpty(),
         target = kClass.asClassName(),
-        generic = generic,
+        genericGet = generic,
         bundleGetNonNull = bundleGetNonNull,
         bundleGetWithDefault = bundleGetWithDefault,
         bundleUsageOnly = bundleUsageOnly,
         intentGetWithDefault = intentGetWithDefault,
     )
 
-    private val keyClass = ClassName(PACKAGE_NAME, name + "Key").tryParameterizedBy(generic)
+    private val keyClass =
+        ClassName(PACKAGE_NAME, name + "Key").tryParameterizedBy(genericGet?.name)
 
     fun fileSpec(): FileSpec {
         val builder = FileSpec.builder(PACKAGE_NAME, name + "Key")
@@ -83,7 +91,7 @@ class Definition(
             .addProperty(
                 PropertySpec.builder("key", String::class).initializer("key").build()
             )
-            .chainIfNotNull(generic?.copy(reified = false)) {
+            .chainIfNotNull(genericGet?.name?.copy(reified = false)) {
                 addTypeVariable(it)
             }
         return builder.build()
@@ -96,11 +104,11 @@ class Definition(
             .addParameter("key", keyClass)
             .addParameter("value", target)
             .addCode("this.put$name(key.key, value)")
-            .chainIfNotNull(generic) {
-                if (it.isReified) {
+            .chainIfNotNull(genericGet) {
+                if (it.name.isReified) {
                     addModifiers(KModifier.INLINE)
                 }
-                addTypeVariable(it)
+                addTypeVariable(it.name)
             }
         return builder.build()
     }
@@ -110,14 +118,29 @@ class Definition(
             .addModifiers(KModifier.OPERATOR)
             .receiver(BUNDLE_CLASS)
             .addParameter("key", keyClass)
-            .chainIfNotNull(generic) {
-                if (it.isReified) {
+            .chainIfNotNull(genericGet) {
+                if (it.name.isReified) {
                     addModifiers(KModifier.INLINE)
                 }
-                addTypeVariable(it)
+                addTypeVariable(it.name)
             }
-        if (generic?.isReified == true) {
-            builder.addCode("return get$name(key.key, T::class.java)", target)
+        if (genericGet?.getApiVersion != null) {
+            builder.beginControlFlow(
+                "return if (%T.SDK_INT < %T.${genericGet.getApiVersion.name})",
+                BUILD_VERSION_CLASS,
+                VERSION_CODES_CLASS
+            )
+            if (genericGet.extraCast) {
+                builder.addStatement("get$name(key.key) as? %T", target)
+                    .suppress("DEPRECATION", "UNCHECKED_CAST")
+            } else {
+                builder.addStatement("get$name(key.key)")
+                    .suppress("DEPRECATION")
+            }
+            builder
+                .nextControlFlow("else")
+                .addStatement("get$name(key.key, T::class.java)", target)
+                .endControlFlow()
         } else {
             builder.addCode("return get$name(key.key)")
         }
@@ -135,7 +158,7 @@ class Definition(
             .addParameter("key", keyClass)
             .addParameter("defaultValue", target)
             .returns(target)
-            .chainIfNotNull(generic) { addTypeVariable(it) }
+            .chainIfNotNull(genericGet) { addTypeVariable(it.name) }
             .addCode("return get$name(key.key, defaultValue)")
         return builder.build()
     }
@@ -146,11 +169,11 @@ class Definition(
             .addParameter("key", keyClass)
             .addParameter("value", target)
             .addCode("this.putExtra(key.key, value)")
-            .chainIfNotNull(generic) {
-                if (it.isReified) {
+            .chainIfNotNull(genericGet) {
+                if (it.name.isReified) {
                     addModifiers(KModifier.INLINE)
                 }
-                addTypeVariable(it)
+                addTypeVariable(it.name)
             }
             .build()
     }
@@ -159,13 +182,28 @@ class Definition(
         val builder = FunSpec.builder("getExtra")
             .receiver(INTENT_CLASS)
             .addParameter("key", keyClass)
-            .chainIfNotNull(generic) { addTypeVariable(it) }
+            .chainIfNotNull(genericGet) { addTypeVariable(it.name) }
         if (withDefault) {
             builder.addParameter("defaultValue", target)
             builder.addCode("return get${name}Extra(key.key, defaultValue)")
-        } else if (generic?.isReified == true) {
-            builder.addCode("return get${name}Extra(key.key, T::class.java)")
-                .addModifiers(KModifier.INLINE)
+        } else if (genericGet?.getApiVersion != null) {
+            builder.beginControlFlow(
+                "return if (%T.SDK_INT < %T.${genericGet.getApiVersion.name})",
+                BUILD_VERSION_CLASS,
+                VERSION_CODES_CLASS
+            ).addModifiers(KModifier.INLINE)
+            
+            if (genericGet.extraCast) {
+                builder.addStatement("get${name}Extra(key.key) as? %T", target)
+                    .suppress("DEPRECATION", "UNCHECKED_CAST")
+            } else {
+                builder.addStatement("get${name}Extra(key.key)")
+                    .suppress("DEPRECATION")
+            }
+            builder
+                .nextControlFlow("else")
+                .addStatement("get${name}Extra(key.key, T::class.java)")
+                .endControlFlow()
         } else {
             builder.addCode("return get${name}Extra(key.key)")
         }
