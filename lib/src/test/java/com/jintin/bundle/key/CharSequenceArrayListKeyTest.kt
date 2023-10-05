@@ -24,7 +24,7 @@ class CharSequenceArrayListKeyTest : BaseKeyTest() {
     @Test
     fun putIntentTest() {
         intent.putExtra(key, expect)
-        verify(exactly = 1) { intent.putExtra(key.key, expect) }
+        verify(exactly = 1) { intent.putCharSequenceArrayListExtra(key.key, expect) }
     }
 
     @Test
