@@ -192,7 +192,7 @@ class Definition(
                 BUILD_VERSION_CLASS,
                 VERSION_CODES_CLASS
             ).addModifiers(KModifier.INLINE)
-            
+
             if (genericGet.extraCast) {
                 builder.addStatement("get${name}Extra(key.key) as? %T", target)
                     .suppress("DEPRECATION", "UNCHECKED_CAST")
