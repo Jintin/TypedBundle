@@ -1,5 +1,7 @@
 package com.jintin.bundle.key
 
+import android.os.Build
+import com.jintin.bundle.ReflectionHelpers
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -13,6 +15,8 @@ class SerializableKeyTest : BaseKeyTest() {
 
     @Before
     fun setup() {
+        every { bundle.getSerializable(any()) } returns expect
+        every { intent.getSerializableExtra(any()) } returns expect
         every { bundle.getSerializable(any(), FakeSerializable::class.java) } returns expect
         every { intent.getSerializableExtra(any(), FakeSerializable::class.java) } returns expect
     }
@@ -30,14 +34,44 @@ class SerializableKeyTest : BaseKeyTest() {
     }
 
     @Test
+    fun getTestOldApi() {
+        ReflectionHelpers.setStaticFieldViaReflection(
+            Build.VERSION::class.java.getField("SDK_INT"),
+            Build.VERSION_CODES.S_V2
+        )
+        val result = bundle[key]
+        verify(exactly = 1) { bundle.getSerializable(key.key) }
+        assert(result == expect)
+    }
+
+    @Test
     fun getTest() {
+        ReflectionHelpers.setStaticFieldViaReflection(
+            Build.VERSION::class.java.getField("SDK_INT"),
+            Build.VERSION_CODES.TIRAMISU
+        )
         val result = bundle[key]
         verify(exactly = 1) { bundle.getSerializable(key.key, FakeSerializable::class.java) }
         assert(result == expect)
     }
 
     @Test
+    fun getIntentTestOldApi() {
+        ReflectionHelpers.setStaticFieldViaReflection(
+            Build.VERSION::class.java.getField("SDK_INT"),
+            Build.VERSION_CODES.S_V2
+        )
+        val result = intent.getExtra(key)
+        verify(exactly = 1) { intent.getSerializableExtra(key.key) }
+        assert(result == expect)
+    }
+
+    @Test
     fun getIntentTest() {
+        ReflectionHelpers.setStaticFieldViaReflection(
+            Build.VERSION::class.java.getField("SDK_INT"),
+            Build.VERSION_CODES.TIRAMISU
+        )
         val result = intent.getExtra(key)
         verify(exactly = 1) { intent.getSerializableExtra(key.key, FakeSerializable::class.java) }
         assert(result == expect)

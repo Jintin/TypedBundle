@@ -1,5 +1,7 @@
 package com.jintin.bundle.key
 
+import android.os.Build
+import com.jintin.bundle.ReflectionHelpers
 import io.mockk.every
 import io.mockk.verify
 import org.junit.Before
@@ -11,8 +13,15 @@ class ParcelableArrayListKeyTest : BaseKeyTest() {
 
     @Before
     fun setup() {
+        every { bundle.getParcelableArrayList<FakeParcelable>(any()) } returns expect
+        every { intent.getParcelableArrayListExtra<FakeParcelable>(any()) } returns expect
         every { bundle.getParcelableArrayList(any(), FakeParcelable::class.java) } returns expect
-        every { intent.getParcelableArrayListExtra(any(), FakeParcelable::class.java) } returns expect
+        every {
+            intent.getParcelableArrayListExtra(
+                any(),
+                FakeParcelable::class.java
+            )
+        } returns expect
     }
 
     @Test
@@ -28,7 +37,24 @@ class ParcelableArrayListKeyTest : BaseKeyTest() {
     }
 
     @Test
+    fun getTestOldApi() {
+        ReflectionHelpers.setStaticFieldViaReflection(
+            Build.VERSION::class.java.getField("SDK_INT"),
+            Build.VERSION_CODES.S_V2
+        )
+        val result = bundle[key]
+        verify(exactly = 1) {
+            bundle.getParcelableArrayList<FakeParcelable>(key.key)
+        }
+        assert(result == expect)
+    }
+
+    @Test
     fun getTest() {
+        ReflectionHelpers.setStaticFieldViaReflection(
+            Build.VERSION::class.java.getField("SDK_INT"),
+            Build.VERSION_CODES.TIRAMISU
+        )
         val result = bundle[key]
         verify(exactly = 1) {
             bundle.getParcelableArrayList(
@@ -40,7 +66,24 @@ class ParcelableArrayListKeyTest : BaseKeyTest() {
     }
 
     @Test
+    fun getIntentTestOldApi() {
+        ReflectionHelpers.setStaticFieldViaReflection(
+            Build.VERSION::class.java.getField("SDK_INT"),
+            Build.VERSION_CODES.S_V2
+        )
+        val result = intent.getExtra(key)
+        verify(exactly = 1) {
+            intent.getParcelableArrayListExtra<FakeParcelable>(key.key)
+        }
+        assert(result == expect)
+    }
+
+    @Test
     fun getIntentTest() {
+        ReflectionHelpers.setStaticFieldViaReflection(
+            Build.VERSION::class.java.getField("SDK_INT"),
+            Build.VERSION_CODES.TIRAMISU
+        )
         val result = intent.getExtra(key)
         verify(exactly = 1) {
             intent.getParcelableArrayListExtra(
