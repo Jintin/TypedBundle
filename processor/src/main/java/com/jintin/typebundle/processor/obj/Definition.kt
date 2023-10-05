@@ -26,6 +26,7 @@ class Definition(
     private val bundleGetWithDefault: Boolean = false,
     private val bundleUsageOnly: Boolean = false,
     private val intentGetWithDefault: Boolean = false,
+    private val intentPutFullName: Boolean = false,
 ) {
 
     constructor(
@@ -35,6 +36,7 @@ class Definition(
         bundleGetWithDefault: Boolean = false,
         bundleUsageOnly: Boolean = false,
         intentGetWithDefault: Boolean = false,
+        intentPutFullName: Boolean = false,
     ) : this(
         name = className.simpleName,
         target = className,
@@ -43,6 +45,7 @@ class Definition(
         bundleGetWithDefault = bundleGetWithDefault,
         bundleUsageOnly = bundleUsageOnly,
         intentGetWithDefault = intentGetWithDefault,
+        intentPutFullName = intentPutFullName
     )
 
     constructor(
@@ -52,6 +55,7 @@ class Definition(
         bundleGetWithDefault: Boolean = false,
         bundleUsageOnly: Boolean = false,
         intentGetWithDefault: Boolean = false,
+        intentPutFullName: Boolean = false,
     ) : this(
         name = kClass.simpleName.orEmpty(),
         target = kClass.asClassName(),
@@ -60,6 +64,7 @@ class Definition(
         bundleGetWithDefault = bundleGetWithDefault,
         bundleUsageOnly = bundleUsageOnly,
         intentGetWithDefault = intentGetWithDefault,
+        intentPutFullName = intentPutFullName
     )
 
     private val keyClass =
@@ -164,18 +169,22 @@ class Definition(
     }
 
     private fun intentSetSpec(): FunSpec {
-        return FunSpec.builder("putExtra")
+        val builder = FunSpec.builder("putExtra")
             .receiver(INTENT_CLASS)
             .addParameter("key", keyClass)
             .addParameter("value", target)
-            .addCode("this.putExtra(key.key, value)")
             .chainIfNotNull(genericGet) {
                 if (it.name.isReified) {
                     addModifiers(KModifier.INLINE)
                 }
                 addTypeVariable(it.name)
             }
-            .build()
+        if (intentPutFullName) {
+            builder.addStatement("this.put${name}Extra(key.key, value)")
+        } else {
+            builder.addStatement("this.putExtra(key.key, value)")
+        }
+        return builder.build()
     }
 
     private fun intentGetSpec(withDefault: Boolean): FunSpec {

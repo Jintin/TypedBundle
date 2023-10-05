@@ -35,27 +35,35 @@ class MyProcessor(private val codeGenerator: CodeGenerator, private val logger: 
         Definition(
             name = "ParcelableArray",
             target = Array::class.parameterizedBy(PARCELABLE_CLASS),
-            genericGet = Generic(name = PARCELABLE_CLASS, getApiVersion = Api.TIRAMISU, extraCast = true)
+            genericGet = Generic(
+                name = PARCELABLE_CLASS,
+                getApiVersion = Api.TIRAMISU,
+                extraCast = true
+            )
         ),
         Definition(
             name = "ParcelableArrayList",
             target = ArrayList::class.parameterizedBy(PARCELABLE_CLASS),
             genericGet = Generic(name = PARCELABLE_CLASS, getApiVersion = Api.TIRAMISU),
+            intentPutFullName = true
         ),
         Definition(
             name = "StringArrayList", target = ArrayList::class.parameterizedBy(
                 String::class
-            )
+            ),
+            intentPutFullName = true
         ),
         Definition(
             name = "CharSequenceArray", target = Array::class.parameterizedBy(CharSequence::class)
         ),
         Definition(
             name = "CharSequenceArrayList",
-            target = ArrayList::class.parameterizedBy(CharSequence::class)
+            target = ArrayList::class.parameterizedBy(CharSequence::class),
+            intentPutFullName = true
         ),
         Definition(
-            name = "IntegerArrayList", target = ArrayList::class.parameterizedBy(Int::class)
+            name = "IntegerArrayList", target = ArrayList::class.parameterizedBy(Int::class),
+            intentPutFullName = true
         ),
         Definition(
             kClass = Boolean::class,
@@ -109,7 +117,11 @@ class MyProcessor(private val codeGenerator: CodeGenerator, private val logger: 
         Definition(
             name = "Serializable",
             target = SERIALIZABLE_CLASS,
-            genericGet = Generic(name = SERIALIZABLE_CLASS, getApiVersion = Api.TIRAMISU, extraCast = true),
+            genericGet = Generic(
+                name = SERIALIZABLE_CLASS,
+                getApiVersion = Api.TIRAMISU,
+                extraCast = true
+            ),
         ),
         Definition(className = ClassName("android.util", "SizeF"), bundleUsageOnly = true),
         Definition(className = ClassName("android.util", "Size"), bundleUsageOnly = true),
