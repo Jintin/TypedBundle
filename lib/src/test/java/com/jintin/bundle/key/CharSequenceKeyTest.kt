@@ -9,10 +9,13 @@ class CharSequenceKeyTest : BaseKeyTest() {
 
     private val key = CharSequenceKey("Test")
     private val expect: CharSequence = "1234"
+    private val defaultValue: CharSequence = "ABCD"
+    private val expectWithDefault = "EFGH"
 
     @Before
     fun setup() {
         every { bundle.getCharSequence(any()) } returns expect
+        every { bundle.getCharSequence(any(), any()) } returns expectWithDefault
         every { intent.getCharSequenceExtra(any()) } returns expect
     }
 
@@ -33,6 +36,13 @@ class CharSequenceKeyTest : BaseKeyTest() {
         val result = bundle[key]
         verify(exactly = 1) { bundle.getCharSequence(key.key) }
         assert(result == expect)
+    }
+
+    @Test
+    fun getWithDefaultTest() {
+        val result = bundle.get(key, defaultValue)
+        verify(exactly = 1) { bundle.getCharSequence(key.key, defaultValue) }
+        assert(result == expectWithDefault)
     }
 
     @Test

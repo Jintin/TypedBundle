@@ -48,13 +48,15 @@ class MyProcessor(private val codeGenerator: CodeGenerator, private val logger: 
             intentPutFullName = true
         ),
         Definition(
-            name = "StringArrayList", target = ArrayList::class.parameterizedBy(
+            name = "StringArrayList",
+            target = ArrayList::class.parameterizedBy(
                 String::class
             ),
             intentPutFullName = true
         ),
         Definition(
-            name = "CharSequenceArray", target = Array::class.parameterizedBy(CharSequence::class)
+            name = "CharSequenceArray",
+            target = Array::class.parameterizedBy(CharSequence::class)
         ),
         Definition(
             name = "CharSequenceArrayList",
@@ -62,7 +64,8 @@ class MyProcessor(private val codeGenerator: CodeGenerator, private val logger: 
             intentPutFullName = true
         ),
         Definition(
-            name = "IntegerArrayList", target = ArrayList::class.parameterizedBy(Int::class),
+            name = "IntegerArrayList",
+            target = ArrayList::class.parameterizedBy(Int::class),
             intentPutFullName = true
         ),
         Definition(
@@ -84,7 +87,10 @@ class MyProcessor(private val codeGenerator: CodeGenerator, private val logger: 
             bundleGetWithDefault = true,
             intentGetWithDefault = true
         ),
-        Definition(CharSequence::class),
+        Definition(
+            CharSequence::class,
+            bundleGetWithDefault = true
+        ),
         Definition(
             kClass = Double::class,
             bundleGetNonNull = true,
