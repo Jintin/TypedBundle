@@ -13,6 +13,7 @@ class ParcelableKeyTest : BaseKeyTest() {
     private val key = ParcelableKey<FakeParcelable>("Test")
     private val expect = mockk<FakeParcelable>()
 
+    @Suppress("DEPRECATION")
     @Before
     fun setup() {
         every { bundle.getParcelable<FakeParcelable>(any()) } returns expect
@@ -33,6 +34,7 @@ class ParcelableKeyTest : BaseKeyTest() {
         verify(exactly = 1) { intent.putExtra(key.key, expect) }
     }
 
+    @Suppress("DEPRECATION")
     @Test
     fun getTestOldApi() {
         ReflectionHelpers.setStaticFieldViaReflection(
@@ -62,6 +64,7 @@ class ParcelableKeyTest : BaseKeyTest() {
         assert(result == expect)
     }
 
+    @Suppress("DEPRECATION")
     @Test
     fun getIntentTestOldApi() {
         ReflectionHelpers.setStaticFieldViaReflection(
