@@ -13,6 +13,7 @@ class SerializableKeyTest : BaseKeyTest() {
     private val key = SerializableKey<FakeSerializable>("Test")
     private val expect = mockk<FakeSerializable>()
 
+    @Suppress("DEPRECATION")
     @Before
     fun setup() {
         every { bundle.getSerializable(any()) } returns expect
@@ -33,6 +34,7 @@ class SerializableKeyTest : BaseKeyTest() {
         verify(exactly = 1) { intent.putExtra(key.key, expect) }
     }
 
+    @Suppress("DEPRECATION")
     @Test
     fun getTestOldApi() {
         ReflectionHelpers.setStaticFieldViaReflection(
@@ -55,6 +57,7 @@ class SerializableKeyTest : BaseKeyTest() {
         assert(result == expect)
     }
 
+    @Suppress("DEPRECATION")
     @Test
     fun getIntentTestOldApi() {
         ReflectionHelpers.setStaticFieldViaReflection(

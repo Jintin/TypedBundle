@@ -4,6 +4,7 @@ plugins {
     id("maven-publish")
     id("signing")
     id("com.google.devtools.ksp") version "1.9.10-1.0.13"
+    id("kotlin-parcelize")
 }
 
 android {

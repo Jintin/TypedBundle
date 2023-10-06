@@ -12,6 +12,7 @@ class SparseParcelableArrayKeyTest : BaseKeyTest() {
     private val key = SparseParcelableArrayKey<FakeParcelable>("Test")
     private val expect = SparseArray<FakeParcelable>()
 
+    @Suppress("DEPRECATION")
     @Before
     fun setup() {
         every {
@@ -28,6 +29,7 @@ class SparseParcelableArrayKeyTest : BaseKeyTest() {
         verify(exactly = 1) { bundle.putSparseParcelableArray(key.key, expect) }
     }
 
+    @Suppress("DEPRECATION")
     @Test
     fun getTestOldApi() {
         ReflectionHelpers.setStaticFieldViaReflection(
