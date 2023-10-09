@@ -10,7 +10,7 @@ And the wrapper class (`StringKey` or `IntKey` for example) will be replace to a
 
 ```kotlin
 dependencies {
-    implementation("io.github.jintin:typed-bundle:0.4.0")
+    implementation("io.github.jintin:typed-bundle:0.5.0")
 }
 ```
 
