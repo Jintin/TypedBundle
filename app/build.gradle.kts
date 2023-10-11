@@ -52,7 +52,7 @@ android {
 dependencies {
 
     implementation(project(":typed-bundle"))
-//    implementation("io.github.jintin:typed-bundle:0.4.0")
+//    implementation("io.github.jintin:typed-bundle:0.5.0")
 
     implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")

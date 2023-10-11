@@ -15,7 +15,7 @@ dependencyResolutionManagement {
         mavenLocal()
         mavenCentral()
 //        maven {
-//            url = URI("https://s01.oss.sonatype.org/service/local/repositories/iogithubjintin-1035/content/")
+//            url = URI("https://s01.oss.sonatype.org/service/local/repositories/iogithubjintin-1040/content/")
 //        }
     }
 }
