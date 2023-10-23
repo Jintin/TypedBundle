@@ -12,6 +12,7 @@ import kotlin.reflect.KClass
 
 const val PACKAGE_NAME = "com.jintin.bundle.key"
 val BUNDLE_CLASS = ClassName("android.os", "Bundle")
+val BASE_BUNDLE_CLASS = ClassName("android.os", "BaseBundle")
 val INTENT_CLASS = ClassName("android.content", "Intent")
 val PARCELABLE_CLASS =
     TypeVariableName.invoke("T", ClassName("android.os", "Parcelable")).copy(reified = true)

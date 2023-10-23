@@ -20,11 +20,26 @@ class MyProcessor(private val codeGenerator: CodeGenerator, private val logger: 
         Definition(
             name = "Binder", target = ClassName("android.os", "IBinder"), bundleUsageOnly = true
         ),
-        Definition(BooleanArray::class),
+        Definition(ClassName("android.os", "Bundle")),
+        Definition(
+            BooleanArray::class,
+            bundleFromBase = true
+        ),
         Definition(ByteArray::class),
         Definition(CharArray::class),
-        Definition(DoubleArray::class),
+        Definition(
+            DoubleArray::class,
+            bundleFromBase = true
+        ),
         Definition(FloatArray::class),
+        Definition(
+            IntArray::class,
+            bundleFromBase = true
+        ),
+        Definition(
+            LongArray::class,
+            bundleFromBase = true
+        ),
         Definition(ShortArray::class),
         Definition(
             name = "SparseParcelableArray",
@@ -72,9 +87,9 @@ class MyProcessor(private val codeGenerator: CodeGenerator, private val logger: 
             kClass = Boolean::class,
             bundleGetWithDefault = true,
             bundleGetNonNull = true,
+            bundleFromBase = true,
             intentGetWithDefault = true
         ),
-        Definition(ClassName("android.os", "Bundle")),
         Definition(
             kClass = Byte::class,
             bundleGetNonNull = true,
@@ -95,6 +110,7 @@ class MyProcessor(private val codeGenerator: CodeGenerator, private val logger: 
             kClass = Double::class,
             bundleGetNonNull = true,
             bundleGetWithDefault = true,
+            bundleFromBase = true,
             intentGetWithDefault = true
         ),
         Definition(
@@ -107,6 +123,14 @@ class MyProcessor(private val codeGenerator: CodeGenerator, private val logger: 
             kClass = Int::class,
             bundleGetNonNull = true,
             bundleGetWithDefault = true,
+            bundleFromBase = true,
+            intentGetWithDefault = true
+        ),
+        Definition(
+            kClass = Long::class,
+            bundleGetNonNull = true,
+            bundleGetWithDefault = true,
+            bundleFromBase = true,
             intentGetWithDefault = true
         ),
         Definition(
@@ -132,7 +156,14 @@ class MyProcessor(private val codeGenerator: CodeGenerator, private val logger: 
         Definition(className = ClassName("android.util", "SizeF"), bundleUsageOnly = true),
         Definition(className = ClassName("android.util", "Size"), bundleUsageOnly = true),
         Definition(
-            kClass = String::class, bundleGetWithDefault = true
+            kClass = String::class,
+            bundleGetWithDefault = true,
+            bundleFromBase = true
+        ),
+        Definition(
+            name = "StringArray",
+            target = Array::class.parameterizedBy(String::class),
+            bundleFromBase = true
         ),
     )
 

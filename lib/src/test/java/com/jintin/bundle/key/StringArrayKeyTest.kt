@@ -5,27 +5,27 @@ import io.mockk.verify
 import org.junit.Before
 import org.junit.Test
 
-class DoubleArrayKeyTest : BaseKeyTest() {
-    private val key = DoubleArrayKey("Test")
-    private val expect = DoubleArray(2) { 1.0 }
+class StringArrayKeyTest : BaseKeyTest() {
+    private val key = StringArrayKey("Test")
+    private val expect = Array(2) { "Test$it" }
 
     @Before
     fun setup() {
-        every { bundle.getDoubleArray(any()) } returns expect
-        every { persistableBundle.getDoubleArray(any()) } returns expect
-        every { intent.getDoubleArrayExtra(any()) } returns expect
+        every { bundle.getStringArray(any()) } returns expect
+        every { persistableBundle.getStringArray(any()) } returns expect
+        every { intent.getStringArrayExtra(any()) } returns expect
     }
 
     @Test
     fun putTest() {
         bundle[key] = expect
-        verify(exactly = 1) { bundle.putDoubleArray(key.key, expect) }
+        verify(exactly = 1) { bundle.putStringArray(key.key, expect) }
     }
 
     @Test
     fun putPersistTest() {
         persistableBundle[key] = expect
-        verify(exactly = 1) { persistableBundle.putDoubleArray(key.key, expect) }
+        verify(exactly = 1) { persistableBundle.putStringArray(key.key, expect) }
     }
 
     @Test
@@ -37,21 +37,20 @@ class DoubleArrayKeyTest : BaseKeyTest() {
     @Test
     fun getTest() {
         val result = bundle[key]
-        verify(exactly = 1) { bundle.getDoubleArray(key.key) }
+        verify(exactly = 1) { bundle.getStringArray(key.key) }
         assert(result.contentEquals(expect))
     }
-
     @Test
     fun getPersistTest() {
         val result = persistableBundle[key]
-        verify(exactly = 1) { persistableBundle.getDoubleArray(key.key) }
+        verify(exactly = 1) { persistableBundle.getStringArray(key.key) }
         assert(result.contentEquals(expect))
     }
 
     @Test
     fun getIntentTest() {
         val result = intent.getExtra(key)
-        verify(exactly = 1) { intent.getDoubleArrayExtra(key.key) }
+        verify(exactly = 1) { intent.getStringArrayExtra(key.key) }
         assert(result.contentEquals(expect))
     }
 }

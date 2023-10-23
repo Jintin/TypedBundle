@@ -1,5 +1,6 @@
 package com.jintin.typebundle.processor.obj
 
+import com.jintin.typebundle.processor.BASE_BUNDLE_CLASS
 import com.jintin.typebundle.processor.BUILD_VERSION_CLASS
 import com.jintin.typebundle.processor.BUNDLE_CLASS
 import com.jintin.typebundle.processor.INTENT_CLASS
@@ -25,6 +26,7 @@ class Definition(
     private val bundleGetNonNull: Boolean = false,
     private val bundleGetWithDefault: Boolean = false,
     private val bundleUsageOnly: Boolean = false,
+    private val bundleFromBase: Boolean = false,
     private val intentGetWithDefault: Boolean = false,
     private val intentPutFullName: Boolean = false,
 ) {
@@ -35,6 +37,7 @@ class Definition(
         bundleGetNonNull: Boolean = false,
         bundleGetWithDefault: Boolean = false,
         bundleUsageOnly: Boolean = false,
+        bundleFromBase: Boolean = false,
         intentGetWithDefault: Boolean = false,
         intentPutFullName: Boolean = false,
     ) : this(
@@ -44,6 +47,7 @@ class Definition(
         bundleGetNonNull = bundleGetNonNull,
         bundleGetWithDefault = bundleGetWithDefault,
         bundleUsageOnly = bundleUsageOnly,
+        bundleFromBase = bundleFromBase,
         intentGetWithDefault = intentGetWithDefault,
         intentPutFullName = intentPutFullName
     )
@@ -54,6 +58,7 @@ class Definition(
         bundleGetNonNull: Boolean = false,
         bundleGetWithDefault: Boolean = false,
         bundleUsageOnly: Boolean = false,
+        bundleFromBase: Boolean = false,
         intentGetWithDefault: Boolean = false,
         intentPutFullName: Boolean = false,
     ) : this(
@@ -63,6 +68,7 @@ class Definition(
         bundleGetNonNull = bundleGetNonNull,
         bundleGetWithDefault = bundleGetWithDefault,
         bundleUsageOnly = bundleUsageOnly,
+        bundleFromBase = bundleFromBase,
         intentGetWithDefault = intentGetWithDefault,
         intentPutFullName = intentPutFullName
     )
@@ -102,10 +108,18 @@ class Definition(
         return builder.build()
     }
 
+    private fun getBundleClass() : TypeName {
+        return if (bundleFromBase) {
+            BASE_BUNDLE_CLASS
+        } else {
+            BUNDLE_CLASS
+        }
+    }
+
     private fun bundleSetSpec(): FunSpec {
         val builder = FunSpec.builder("set")
             .addModifiers(KModifier.OPERATOR)
-            .receiver(BUNDLE_CLASS)
+            .receiver(getBundleClass())
             .addParameter("key", keyClass)
             .addParameter("value", target)
             .addCode("this.put$name(key.key, value)")
@@ -121,7 +135,7 @@ class Definition(
     private fun bundleGetSpec(resultNonNull: Boolean): FunSpec {
         val builder = FunSpec.builder("get")
             .addModifiers(KModifier.OPERATOR)
-            .receiver(BUNDLE_CLASS)
+            .receiver(getBundleClass())
             .addParameter("key", keyClass)
             .chainIfNotNull(genericGet) {
                 if (it.name.isReified) {
@@ -159,7 +173,7 @@ class Definition(
 
     private fun bundleGetWithDefaultSpec(): FunSpec {
         val builder = FunSpec.builder("get")
-            .receiver(BUNDLE_CLASS)
+            .receiver(getBundleClass())
             .addParameter("key", keyClass)
             .addParameter("defaultValue", target)
             .returns(target)

@@ -12,6 +12,7 @@ class BooleanArrayKeyTest : BaseKeyTest() {
     @Before
     fun setup() {
         every { bundle.getBooleanArray(any()) } returns expect
+        every { persistableBundle.getBooleanArray(any()) } returns expect
         every { intent.getBooleanArrayExtra(any()) } returns expect
     }
 
@@ -19,6 +20,12 @@ class BooleanArrayKeyTest : BaseKeyTest() {
     fun putTest() {
         bundle[key] = expect
         verify(exactly = 1) { bundle.putBooleanArray(key.key, expect) }
+    }
+
+    @Test
+    fun putPersistTest() {
+        persistableBundle[key] = expect
+        verify(exactly = 1) { persistableBundle.putBooleanArray(key.key, expect) }
     }
 
     @Test
@@ -31,6 +38,13 @@ class BooleanArrayKeyTest : BaseKeyTest() {
     fun getTest() {
         val result = bundle[key]
         verify(exactly = 1) { bundle.getBooleanArray(key.key) }
+        assert(result.contentEquals(expect))
+    }
+
+    @Test
+    fun getPersistTest() {
+        val result = persistableBundle[key]
+        verify(exactly = 1) { persistableBundle.getBooleanArray(key.key) }
         assert(result.contentEquals(expect))
     }
 
