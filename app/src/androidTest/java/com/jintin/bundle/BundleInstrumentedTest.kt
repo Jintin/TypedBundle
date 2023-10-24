@@ -19,8 +19,11 @@ import com.jintin.bundle.key.DoubleArrayKey
 import com.jintin.bundle.key.DoubleKey
 import com.jintin.bundle.key.FloatArrayKey
 import com.jintin.bundle.key.FloatKey
+import com.jintin.bundle.key.IntArrayKey
 import com.jintin.bundle.key.IntKey
 import com.jintin.bundle.key.IntegerArrayListKey
+import com.jintin.bundle.key.LongArrayKey
+import com.jintin.bundle.key.LongKey
 import com.jintin.bundle.key.ParcelableArrayKey
 import com.jintin.bundle.key.ParcelableArrayListKey
 import com.jintin.bundle.key.ParcelableKey
@@ -30,6 +33,7 @@ import com.jintin.bundle.key.ShortKey
 import com.jintin.bundle.key.SizeFKey
 import com.jintin.bundle.key.SizeKey
 import com.jintin.bundle.key.SparseParcelableArrayKey
+import com.jintin.bundle.key.StringArrayKey
 import com.jintin.bundle.key.StringArrayListKey
 import com.jintin.bundle.key.StringKey
 import com.jintin.bundle.key.get
@@ -55,8 +59,11 @@ class BundleInstrumentedTest {
     private val doubleKey = DoubleKey("doubleKey")
     private val floatArrayKey = FloatArrayKey("floatArrayKey")
     private val floatKey = FloatKey("floatKey")
+    private val intArrayKey = IntArrayKey("intArrayKey")
     private val integerArrayListKey = IntegerArrayListKey("integerArrayListKey")
     private val intKey = IntKey("intKey")
+    private val longArrayKey = LongArrayKey("longArrayKey")
+    private val longKey = LongKey("longKey")
     private val parcelableArrayKey = ParcelableArrayKey<FakeParcelable>("parcelableArrayKey")
     private val parcelableArrayListKey =
         ParcelableArrayListKey<FakeParcelable>("parcelableArrayListKey")
@@ -68,6 +75,7 @@ class BundleInstrumentedTest {
     private val sizeKey = SizeKey("sizeKey")
     private val sparseParcelableArrayKey =
         SparseParcelableArrayKey<FakeParcelable>("sparseParcelableArrayKey")
+    private val stringArrayKey = StringArrayKey("stringArrayKey")
     private val stringArrayListKey = StringArrayListKey("stringArrayListKey")
     private val stringKey = StringKey("stringKey")
 
@@ -127,6 +135,10 @@ class BundleInstrumentedTest {
         bundle[floatKey] = floatData
         assert(bundle[floatKey] == floatData)
 
+        val intArray = IntArray(3) { it }
+        bundle[intArrayKey] = intArray
+        assert(bundle[intArrayKey].contentEquals(intArray))
+
         val integerArrayList = arrayListOf(3, 4, 5)
         bundle[integerArrayListKey] = integerArrayList
         assert(bundle[integerArrayListKey] == integerArrayList)
@@ -134,6 +146,14 @@ class BundleInstrumentedTest {
         val intData = 123
         bundle[intKey] = intData
         assert(bundle[intKey] == intData)
+
+        val longArray = LongArray(3) { it.toLong() }
+        bundle[longArrayKey] = longArray
+        assert(bundle[longArrayKey].contentEquals(longArray))
+
+        val longData = 123L
+        bundle[longKey] = longData
+        assert(bundle[longKey] == longData)
 
         val parcelableArray = Array(3) { FakeParcelable(it) }
         bundle[parcelableArrayKey] = parcelableArray
@@ -170,6 +190,10 @@ class BundleInstrumentedTest {
         val sparseParcelableArray = SparseArray<FakeParcelable>()
         bundle[sparseParcelableArrayKey] = sparseParcelableArray
         assert(bundle[sparseParcelableArrayKey] == sparseParcelableArray)
+
+        val stringArray = arrayOf("1", "2", "3")
+        bundle[stringArrayKey] = stringArray
+        assert(bundle[stringArrayKey].contentEquals(stringArray))
 
         val stringArrayList = arrayListOf("1", "2", "3")
         bundle[stringArrayListKey] = stringArrayList
@@ -237,6 +261,10 @@ class BundleInstrumentedTest {
         intent.putExtra(floatKey, floatData)
         assert(intent.getExtra(floatKey, 0f) == floatData)
 
+        val intArray = IntArray(3) { it }
+        intent.putExtra(intArrayKey, intArray)
+        assert(intent.getExtra(intArrayKey).contentEquals(intArray))
+
         val integerArrayList = arrayListOf(3, 4, 5)
         intent.putExtra(integerArrayListKey, integerArrayList)
         assert(intent.getExtra(integerArrayListKey) == integerArrayList)
@@ -244,6 +272,14 @@ class BundleInstrumentedTest {
         val intData = 123
         intent.putExtra(intKey, intData)
         assert(intent.getExtra(intKey, 0) == intData)
+
+        val longArray = LongArray(3) { it.toLong() }
+        intent.putExtra(longArrayKey, longArray)
+        assert(intent.getExtra(longArrayKey).contentEquals(longArray))
+
+        val longData = 123L
+        intent.putExtra(longKey, longData)
+        assert(intent.getExtra(longKey, 0) == longData)
 
         val parcelableArray = Array(3) { FakeParcelable(it) }
         intent.putExtra(parcelableArrayKey, parcelableArray)
@@ -268,6 +304,10 @@ class BundleInstrumentedTest {
         val shortData = 3.toShort()
         intent.putExtra(shortKey, shortData)
         assert(intent.getExtra(shortKey, 0) == shortData)
+
+        val stringArray = arrayOf("1", "2", "3")
+        intent.putExtra(stringArrayKey, stringArray)
+        assert(intent.getExtra(stringArrayKey).contentEquals(stringArray))
 
         val stringArrayList = arrayListOf("1", "2", "3")
         intent.putExtra(stringArrayListKey, stringArrayList)

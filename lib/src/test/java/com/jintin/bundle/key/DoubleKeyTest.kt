@@ -16,6 +16,8 @@ class DoubleKeyTest : BaseKeyTest() {
     fun setup() {
         every { bundle.getDouble(any()) } returns expect
         every { bundle.getDouble(any(), any()) } returns expectWithDefault
+        every { persistableBundle.getDouble(any()) } returns expect
+        every { persistableBundle.getDouble(any(), any()) } returns expectWithDefault
         every { intent.getDoubleExtra(any(), any()) } returns expectWithDefault
     }
 
@@ -23,6 +25,12 @@ class DoubleKeyTest : BaseKeyTest() {
     fun putTest() {
         bundle[key] = expect
         verify(exactly = 1) { bundle.putDouble(key.key, expect) }
+    }
+
+    @Test
+    fun putPersistTest() {
+        persistableBundle[key] = expect
+        verify(exactly = 1) { persistableBundle.putDouble(key.key, expect) }
     }
 
     @Test
@@ -39,9 +47,23 @@ class DoubleKeyTest : BaseKeyTest() {
     }
 
     @Test
+    fun getPersistTest() {
+        val result = persistableBundle[key]
+        verify(exactly = 1) { persistableBundle.getDouble(key.key) }
+        assert(result == expect)
+    }
+
+    @Test
     fun getWithDefaultTest() {
         val result = bundle.get(key, defaultValue)
         verify(exactly = 1) { bundle.getDouble(key.key, defaultValue) }
+        assert(result == expectWithDefault)
+    }
+
+    @Test
+    fun getPersistWithDefaultTest() {
+        val result = persistableBundle.get(key, defaultValue)
+        verify(exactly = 1) { persistableBundle.getDouble(key.key, defaultValue) }
         assert(result == expectWithDefault)
     }
 

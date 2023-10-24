@@ -5,32 +5,32 @@ import io.mockk.verify
 import org.junit.Before
 import org.junit.Test
 
-class IntKeyTest : BaseKeyTest() {
+class LongKeyTest : BaseKeyTest() {
 
-    private val key = IntKey("Test")
-    private val expect = 1234
-    private val expectWithDefault = 2345
-    private val defaultValue = 3456
+    private val key = LongKey("Test")
+    private val expect = 1234L
+    private val expectWithDefault = 2345L
+    private val defaultValue = 3456L
 
     @Before
     fun setup() {
-        every { bundle.getInt(any()) } returns expect
-        every { bundle.getInt(any(), any()) } returns expectWithDefault
-        every { persistableBundle.getInt(any()) } returns expect
-        every { persistableBundle.getInt(any(), any()) } returns expectWithDefault
-        every { intent.getIntExtra(any(), any()) } returns expectWithDefault
+        every { bundle.getLong(any()) } returns expect
+        every { bundle.getLong(any(), any()) } returns expectWithDefault
+        every { persistableBundle.getLong(any()) } returns expect
+        every { persistableBundle.getLong(any(), any()) } returns expectWithDefault
+        every { intent.getLongExtra(any(), any()) } returns expectWithDefault
     }
 
     @Test
     fun putTest() {
         bundle[key] = expect
-        verify(exactly = 1) { bundle.putInt(key.key, expect) }
+        verify(exactly = 1) { bundle.putLong(key.key, expect) }
     }
 
     @Test
     fun putPersistTest() {
         persistableBundle[key] = expect
-        verify(exactly = 1) { persistableBundle.putInt(key.key, expect) }
+        verify(exactly = 1) { persistableBundle.putLong(key.key, expect) }
     }
 
     @Test
@@ -42,35 +42,35 @@ class IntKeyTest : BaseKeyTest() {
     @Test
     fun getTest() {
         val result = bundle[key]
-        verify(exactly = 1) { bundle.getInt(key.key) }
+        verify(exactly = 1) { bundle.getLong(key.key) }
         assert(result == expect)
     }
 
     @Test
     fun getWithDefaultTest() {
         val result = bundle.get(key, defaultValue)
-        verify(exactly = 1) { bundle.getInt(key.key, defaultValue) }
+        verify(exactly = 1) { bundle.getLong(key.key, defaultValue) }
         assert(result == expectWithDefault)
     }
 
     @Test
     fun getPersistTest() {
         val result = persistableBundle[key]
-        verify(exactly = 1) { persistableBundle.getInt(key.key) }
+        verify(exactly = 1) { persistableBundle.getLong(key.key) }
         assert(result == expect)
     }
 
     @Test
     fun getPersistWithDefaultTest() {
         val result = persistableBundle.get(key, defaultValue)
-        verify(exactly = 1) { persistableBundle.getInt(key.key, defaultValue) }
+        verify(exactly = 1) { persistableBundle.getLong(key.key, defaultValue) }
         assert(result == expectWithDefault)
     }
 
     @Test
     fun getIntentTest() {
         val result = intent.getExtra(key, defaultValue)
-        verify(exactly = 1) { intent.getIntExtra(key.key, defaultValue) }
+        verify(exactly = 1) { intent.getLongExtra(key.key, defaultValue) }
         assert(result == expectWithDefault)
     }
 }
